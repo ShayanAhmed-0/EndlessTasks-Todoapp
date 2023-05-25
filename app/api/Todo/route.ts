@@ -1,4 +1,3 @@
-
 import { QueryResult } from '@vercel/postgres';
 import { NextRequest,NextResponse } from 'next/server'; 
 import {Todo,NewTodo,db,todoTable} from "../../lib/drizzle"
@@ -7,7 +6,7 @@ import { sql } from '@vercel/postgres';
 export async function GET(request:NextRequest){
   
   try {
-    await sql`Create table if not exists Todos(id serial,Task varchar(255))`
+    await sql`Create table if not exists todos(id serial,Task varchar(255))`
     const res = await db.select().from(todoTable)
 
     return NextResponse.json({data:res})
@@ -22,9 +21,9 @@ const req=await request.json()
 // const client =await db.connect();
 try {
   if(req.Task){
-const res = db.insert(todoTable).values(
+const res = await db.insert(todoTable).values(
   {
-    task:req.task
+    task:req.Task
   }
 ).returning()
     return NextResponse.json({message:`${req.Task} inserted successfully`})
