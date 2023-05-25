@@ -11,6 +11,7 @@ export async function GET(request:NextRequest){
 
     return NextResponse.json({data:res})
   } catch (error) {
+    console.log("get catch")
     console.log((error as {message:string}).message)
     return NextResponse.json({message:"Something Went Wrong"})
   }
@@ -20,18 +21,20 @@ export async function POST(request:NextRequest){
 const req=await request.json()
 // const client =await db.connect();
 try {
-  if(req.Task){
+  if(req.task){
 const res = await db.insert(todoTable).values(
   {
-    task:req.Task
+    task:req.task
   }
 ).returning()
-    return NextResponse.json({message:`${req.Task} inserted successfully`})
+    return NextResponse.json({message:`${req.task} inserted successfully`})
 
   }else{
+    console.log("post else")
     throw new Error("Task Field is Required")
   }
 } catch (error) {
+  console.log("post catch")
   return NextResponse.json({message:(error as {message:string}).message})
 }
 }
