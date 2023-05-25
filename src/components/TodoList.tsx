@@ -1,4 +1,4 @@
-import { Todo } from "./lib/drizzle";
+import { Todo } from "../lib/drizzle";
 
 const getData = async () => {
   try {
@@ -20,12 +20,11 @@ const getData = async () => {
 
 const TodoList = async() => {
 
-    const re:{data:Todo[]} = await getData()
-    console.log(re)
+    const res:{data:Todo[]} = await getData()
 
   return (
     <>
-    {re.data.map((item)=>{
+    {res.data.map((item)=>{
       return(
         <div>
           <p>{item.task}</p>

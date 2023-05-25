@@ -1,6 +1,6 @@
 import { QueryResult } from '@vercel/postgres';
 import { NextRequest,NextResponse } from 'next/server'; 
-import {Todo,NewTodo,db,todoTable} from "../../lib/drizzle"
+import {Todo,NewTodo,db,todoTable} from "../../../lib/drizzle"
 import { sql } from '@vercel/postgres';
 
 export async function GET(request:NextRequest){
