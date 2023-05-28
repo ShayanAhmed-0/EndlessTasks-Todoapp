@@ -1,4 +1,4 @@
-import {pgTable,serial,varchar} from "drizzle-orm/pg-core"
+import {pgTable,serial,varchar,index} from "drizzle-orm/pg-core"
 import {drizzle} from "drizzle-orm/vercel-postgres"
 import {InferModel,eq} from "drizzle-orm"
 import {sql} from "@vercel/postgres"

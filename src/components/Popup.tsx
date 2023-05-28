@@ -1,12 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextareaHTMLAttributes } from 'react';
 import editicon from "../../public/edit.png"
 import Image from 'next/image';
+import { Todo } from '@/lib/drizzle';
 
-const PopupScreen = () => {
+interface Todos {
+  compid: number;
+  comptask: string;
+  refresh:()=>void
+}
+
+
+
+const PopupScreen = (props:Todos) => {
+  const {refresh,comptask,compid}=props
   const [isOpen, setIsOpen] = useState(false);
-  const [input1, setInput1] = useState('');
-  const [input2, setInput2] = useState('');
+  const [input1, setInput1] = useState(comptask);
+  const [input2, setInput2] = useState(comptask);
+
+  const handlePATCH = async () => {
+    try {
+      const res = await fetch(`/api/Todo/${compid}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          task: input2
+        }),
+      });
+      const data = await res.json();
+      refresh(); // Call the refreshList function to update the list
+    } catch (error) {
+      console.log("Delete handle");
+    }
+  }
+
 
   const openPopup = () => {
     setIsOpen(true);
@@ -26,9 +52,7 @@ const PopupScreen = () => {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log('Input 1:', input1);
-    console.log('Input 2:', input2);
+    handlePATCH()
     closePopup();
   };
 

@@ -25,7 +25,7 @@ export async function DELETE(request:NextRequest,{params}:{params:{id:number}}) 
   }
 }
 
-export async function PUT(request : NextRequest,{params}:{params:{id:number}}){
+export async function PATCH(request : NextRequest,{params}:{params:{id:number}}){
 
   const req = await request.json();
 try {

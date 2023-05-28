@@ -8,7 +8,7 @@ export async function GET(request:NextRequest){
   
   try {
     await sql`Create table if not exists todos(id serial,Task varchar(255))`
-    const res = await db.select().from(todoTable)
+    const res = await db.select().from(todoTable).orderBy(todoTable.id)
 
     return NextResponse.json({data:res})
   } catch (error) {

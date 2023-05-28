@@ -3,12 +3,12 @@ import { Todo } from "../lib/drizzle";
 import { useState, useEffect } from "react";
 import { NewTodo } from "../lib/drizzle";
 import delicon from "../../public/delete.png"
-
 import Image from "next/image";
 import PopupScreen from "./Popup";
+import AddTodos from "./AddTodos";
 
 
-const getData = async () => {
+async function getData() {
   try {
     const res = await fetch("http://localhost:3000/api/Todo", {
       method: "GET",
@@ -39,42 +39,11 @@ const handleDel = async (todoId: number, refreshList: () => void) => {
   }
 }
 
-const handlePUT = async (todoId: number, refreshList: () => void) => {
-  try {
-    const res = await fetch(`/api/Todo/${todoId}`, {
-      method: 'PUT',
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const data = await res.json();
-    refreshList(); // Call the refreshList function to update the list
-  } catch (error) {
-    console.log("Delete handle");
-  }
-}
+
 
 const TodoList = () => {
-  const [task, setTask] = useState<NewTodo | null>(null);
   const [data, setData] = useState<Todo[]>([]);
 
-
-  const AddTodo = async () => {
-    try {
-      if (task) {
-        const res = await fetch("/api/Todo", {
-          method: "POST",
-          body: JSON.stringify({
-            task: task.task
-          }),
-        });
-        await refreshList(); 
-      }
-    } catch (error) {
-      console.log("Error AddTODO");
-    }
-  };
 
   const refreshList = async () => {
     const result = await getData();
@@ -97,7 +66,7 @@ const TodoList = () => {
           <div className="flex items-center justify-between">
            
            {/*edit button implementation */}
-           <PopupScreen/>
+           <PopupScreen refresh={refreshList} comptask={item.task} compid={item.id}/>
 
           <button onClick={() => handleDel(item.id, refreshList)}>
           <Image src={delicon} alt="delete icon"/>
@@ -107,24 +76,7 @@ const TodoList = () => {
         );
       })}
           </div>
-      <div className="flex justify-center">
-        <form className="w-4/5">
-          <input
-            onChange={(e) =>
-              setTask({
-                task: e.target.value
-              })
-            }
-            className="w-full border border-blue-300 rounded focus:outline-blue-400"
-            type="text"
-          />
-          <div className="flex justify-center">
-          <button type="button" className="p-2 pl-4 pr-4 m-2 bg-blue-400 rounded" onClick={AddTodo}>
-            Submit
-          </button>
-          </div>
-        </form>
-      </div>
+     <AddTodos refresh={refreshList}/>
     </>
   );
 };
