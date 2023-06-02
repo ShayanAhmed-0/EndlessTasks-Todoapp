@@ -10,7 +10,7 @@ import AddTodos from "./AddTodos";
 
 async function getData() {
   try {
-    const res = await fetch("http://localhost:3000/api/Todo", {
+    const res = await fetch("https://endlesstasks.vercel.app/api/Todo", {
       method: "GET",
       cache: "no-store",
       headers: {
